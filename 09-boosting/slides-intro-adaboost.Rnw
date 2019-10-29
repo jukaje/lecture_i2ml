@@ -1,0 +1,302 @@
+<<set-parent, include = FALSE>>=
+knitr::set_parent("../style/preamble.Rnw")
+library(ggplot2)
+library(randomForest)
+library(colorspace)
+
+library(mlr)
+library(ElemStatLearn) # for spam data set
+library(mboost)
+library(mlbench)
+
+@
+
+<<size = "scriptsize", include=FALSE>>=
+source("rsrc/cim1_optim.R")
+@
+
+<<setup, child="../style/setup.Rnw", include = FALSE>>=
+@
+
+\lecturechapter{Introduction to Boosting}
+\lecture{Introduction to Machine Learning}
+
+\sloppy
+\section{Introduction}
+
+\begin{vbframe}{Introduction to boosting}
+  \begin{itemize}
+    \item
+      Boosting is considered to be one of the most powerful learning ideas within the last twenty years.
+    \item
+      Originally designed for classification, but (especially gradient) boosting handles regression (and many others tasks) nowadays naturally.
+    \item
+      Homogeneous ensemble method (like bagging), but fundamentally different approach.
+    \item
+      {\bf Idea:} Take a weak classifier and sequentially apply it to modified versions of the training data.
+    \item
+      We will begin by describing an older, simpler boosting algorithm, designed for binary classification, the popular \enquote{AdaBoost}.
+  \end{itemize}
+\end{vbframe}
+
+\begin{vbframe}{Boosting vs. Bagging}
+
+% The general concept of boosting is a sequential fitting of weak learner on the error:
+\begin{center}
+\includegraphics[width=0.65\textwidth]{figure_man/bagging_vs_boosting.png}
+\end{center}
+
+% In bagging, the models are fitted parallel and not sequential.
+
+\end{vbframe}
+
+\begin{vbframe}{The boosting question}
+
+The first boosting algorithm ever was in fact no algorithm for practical purposes but the proof in a theoretical discussion:
+
+\lz
+
+\enquote{Does the existence of a weak learner for a certain problem imply
+the existence of a strong learner?} (Kearns 1988)
+
+\lz
+
+\begin{itemize}
+\item \textbf{Weak learners} are defined as a prediction rule with a correct classification rate that is at least slightly better than random guessing (> 50\% accuracy).
+\item We call a learner a \textbf{strong learner} \enquote{if there exists a polynomial-time algorithm that achieves low error with high confidence for all concepts in the class} (Schapire 1990)
+
+\end{itemize}
+
+In practice, it is typically easy to construct weak learners, but very difficult to get a strong one.
+
+\end{vbframe}
+
+
+
+\section{AdaBoost}
+
+\begin{vbframe}{The boosting answer - AdaBoost}
+
+Any weak (base) learner can be iteratively boosted to become also
+a strong learner (Schapire and Freund 1990).
+The proof of this ground-breaking idea generated the first boosting algorithm.
+
+\begin{itemize}
+  \item The \textbf{AdaBoost} (Adaptive Boosting) algorithm is a \textbf{boosting} method
+    for binary classification by Freund and Schapire (1997).
+  \item The base learner is sequentially applied to weighted training observations.
+  \item After each base learner fit, currently misclassified observation receive a higher weight for
+    the next iteration, so we focus more on the \enquote{harder} instances.
+\end{itemize}
+
+Leo Breiman (referring to the success of AdaBoost):
+
+\enquote{Boosting is the best off-the-shelf classifier in the world.}
+
+\framebreak
+
+\begin{itemize}
+  \item Assume target variable $y$ encoded as $\{-1,1\}$,
+    and weak base learner (e.g. tree stumps) from a hypothesis space $\mathcal{B}$.
+  \item Base learner models $\bmm$ are binary classifiers that map to $\Yspace = \{-1,+1\}$.
+    We might sometimes write $b(\xb, \thetam)$, instead.
+  \item Predictions from all base models $\bmm$ are combined to form:
+    $$
+    \fx = \sum_{m=1}^{M} \betam \bmm(\xb)
+    $$
+  \item Weights $\betam$ are computed by the boosting algorithm.
+    Their effect is to give higher values to base learners with higher predictive accuracy.
+  \item Number of iterations $M$ main tuning parameter.
+  \item The discrete prediction function is $\hx = \text{sign}(\fx) \in \{-1,1\}$.
+\end{itemize}
+
+\framebreak
+
+\begin{algorithm}[H]
+  \setstretch{1.25}
+  \caption*{AdaBoost}
+  \begin{algorithmic}[1]
+    \State Initialize observation weights: $w^{[1](i)} = \frac{1}{n} \quad \forall i \in \nset$
+    \For {$m = 1 \to M$}
+      \State Fit classifier to training data with weights $\wm$ and get $\bmmh$
+      \State Calculate weighted in-sample misclassification rate
+      $$
+        \errm = \frac{\sumin \wmi \cdot \left[\yi \neq \bmmh(\xi)\right]}{\sumin \wmi}
+      $$
+      \State Compute: $ \betamh = \frac{1}{2} \log \left( \frac{1 - \errm}{\errm}\right)$
+      \State Set: $w^{[m+1](i)} = \wmi \cdot \exp\left(\betamh \cdot
+        \left[\yi \neq \bmmh(\xi)\right] \right)$
+    \EndFor
+    \State Output: $\fxh = \sum_{m=1}^{M} \betamh \bmmh(\xb)$
+  \end{algorithmic}
+\end{algorithm}
+
+\end{vbframe}
+
+% \begin{vbframe}{Adaboost weights}
+<<eval = FALSE>>=
+err = seq(0.01, 1, .01)
+beta = log((1-err)/err)
+qplot(err, beta, geom = "line",
+ xlab = expression(err^m), ylab = expression(beta^m))
+@
+% \end{vbframe}
+
+\begin{vbframe}{Adaboost illustration}
+
+\begin{columns}
+\column{4cm}
+
+\includegraphics[width=4cm]{figure_man/adaboost_example1.png}
+
+{\footnotesize Schapire, Boosting, 2012.}
+
+\column{6cm}
+
+\begin{itemize}
+  \item $n = 10$ observations and $M = 3$ iterations, tree stumps as base learners
+  \item The label of every observation is represented by $+$ or $-$
+  \item The size of the label represents the weight of an observation in the corresponding iteration
+  \item Dark grey area: base model in iteration $m$ predicts $+$
+  \item Light grey area: base model in iteration $m$ predicts $-$
+\end{itemize}
+
+\end{columns}
+
+\framebreak
+
+\begin{columns}
+\column{7cm}
+
+\includegraphics[width=7cm]{figure_man/adaboost_example2.png}
+
+{\footnotesize Schapire, Boosting, 2012.}
+
+\column{3cm}
+
+The three base models are combined into one classifier.
+
+All observations are correctly classified.
+
+\end{columns}
+
+\end{vbframe}
+
+\begin{vbframe}{AdaBoost Weights}
+
+The base-learner weights of AdaBoost can be treated as measure how much a single base-learner was able to learn:
+\begin{itemize}
+
+  \item
+    We expect a weak learner to be slightly better than random guessing: $\errm \leq 0.5$ \\
+    $\rightarrow$ First base-learner $\text{err}^{[1]} = 0.3$
+
+  \item
+    The ratio $(1 - \errm) / \errm$ used to calculate the weights is therefore the proportion of correct vs. misclassified examples \\
+    $\rightarrow$ First base-learner $0.7 / 0.3 \approx 2.33$
+
+  \item
+    The logarithm scales the ratio to a more intuitive weighting scheme:
+    \begin{itemize}
+
+      \item
+        $0.5 \log((1 - \errm) / \errm) = 0$ $\Leftrightarrow$ base-learner $m$ is not able to learn anything $\rightarrow\ \errm = 0.5$
+
+      \item
+        $0.5 \log((1 - \errm) / \errm) > 0$ $\Leftrightarrow$ base-learner $m$ is able to learn something $\rightarrow\ \errm < 0.5$
+
+    \end{itemize}
+    $\rightarrow$ Weight of the first base-learner: $0.5 \log(2.33) \approx 0.42$
+
+\end{itemize}
+
+\framebreak
+
+The next step is to update the observation weights $w_i$ for for each observation $i$.
+
+\begin{itemize}
+
+  \item For iteration $m + 1$, this is done by
+  $$w^{[m+1](i)} = \wmi \cdot \exp \left(\betamh \cdot \left[\yi \neq \bmmh(\xi)\right] \right)$$
+
+  \item If the base learner predicts the $i$-th observation correctly, $\exp \left(\betamh \cdot \left[\yi \neq \bmmh(\xi)\right] \right)$ reduces to $\exp(0) = 1$, which means that the weight for observation $i$ stays unchanged since $w^{[m+1](i)} = \wmi \cdot 1 = \wmi$.
+
+  \item Considering the example, we have 7 correctly observations for which the initial observation weights $1/n = 0.1$ are kept untouched.
+
+  \item The 3 wrongly classified observations get new observation weights
+
+  \begin{align*}
+    w^{[2](i)} &= w^{[1](i)} \cdot \exp \left(\hat \beta^{[1]} \cdot \left[\yi \neq \hat{b}^{[1]}(\xi)\right] \right) \\
+               &= \frac{1}{10} \cdot \exp \left(0.42 \cdot 1 \right) \\
+               &\approx 0.11
+  \end{align*}
+
+  \item The resulting new weights for the missclassified observations are now slightly greater compared to the initial weights of $0.1$.
+
+  \item This forces the next base learner $b^{[2]}(\xi)$ to concentrate more on those.
+
+\end{itemize}
+
+\end{vbframe}
+
+\begin{vbframe}{Example: Bagging vs Boosting}
+
+Random Forest versus AdaBoost (both with stumps) on Spirals data from mlbench ($n=200$, sd$=0$).
+Performance (mmce) is measured with $3 \times 10$ repeated CV.
+
+<<comparing-methods-plot, fig.height=4.6>>=
+load("rsrc/comparing_methods_result.RData")
+ggplot(data = subset(result, learner %in% c("rf_stump", "ada")),
+  aes(x = M, y = mmce, col = learner, group = learner)) + geom_line() + xlab("m")
+@
+
+\framebreak
+
+\begin{itemize}
+
+  \item We see that, weak learners are not as powerful in combination with bagging compared with boosting.
+
+  \item This is mainly caused by the fact that bagging only performs variance reduction and that tree stumps are very stable
+
+\end{itemize}
+
+<<fig.align="center", echo=FALSE, fig.width=16, fig.height=6>>=
+load("rsrc/stump_plots.RData")
+gridExtra::grid.arrange(learnerPredPlot1, learnerPredPlot2, ncol = 2)
+@
+
+\end{vbframe}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{vbframe}{Overfitting behavior}
+
+A long-lasting discussion in the context of AdaBoost is its overfitting behavior.
+
+% \lz
+
+% \textbf{When a prediction rule concentrates too much on peculiarities of the specific sample of training observations, it will often perform poorly on a new data set.}
+
+% \lz
+
+The main instrument to avoid overfitting is the stopping iteration $M$:
+\begin{itemize}
+\item High values of $M$ lead to complex solutions. Overfitting?
+\item Small values of $M$ lead to simple solutions. Underfitting?
+\end{itemize}
+Although eventually it will overfit, AdaBoost in general shows a rather slow overfitting behavior.
+\end{vbframe}
+
+% \begin{vbframe}{Software in R}
+%   \begin{itemize}
+%     \item Bagging: Package \pkg{mlr} is able to bag any learner with \code{makeBaggingWrapper()}.
+%   \item Random Forests: Package \pkg{randomForest} with function
+%     \code{randomForest()} based on CART.
+%   \item AdaBoost: included in the packages \code{ada} and \code{boosting}.
+% \end{itemize}
+% \end{vbframe}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\endlecture

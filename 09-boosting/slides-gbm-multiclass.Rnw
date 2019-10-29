@@ -18,125 +18,9 @@ source("rsrc/cim1_optim.R")
 <<setup, child="../style/setup.Rnw", include = FALSE>>=
 @
 
-\lecturechapter{Boosting - Advanced}
+\lecturechapter{Gradient Boosting: Other Problem Classes}
 \lecture{Introduction to Machine Learning}
 
-\sloppy
-\section{Gradient boosting and trees}
-
-\begin{vbframe}{Gradient boosting and trees}
-
-Trees are mainly used as base learners for gradient boosting in ML.
-A great deal of research has been done on this combination so far, and it often provides the best results.
-
-\begin{blocki}{Reminder: Advantages of trees}
-\item No problems with categorical features.
-\item No problems with outliers in feature values.
-\item No problems with missing values.
-\item No problems with monotone transformations of features.
-\item Trees (and stumps!) can be fitted quickly, even for large $n$.
-\item Trees have a simple built-in type of variable selection.
-%\item Interpretation of Trees is rather easy.
-\end{blocki}
-Gradient boosted trees retains all of them, and strongly improves the trees' predictive power.
-Furthermore, it is possible to adapt gradient boosting especially to tree learners.
-
-\framebreak
-
-One can write a tree as: $ b(\xb) = \sum_{t=1}^{T} c_t \I(\xb \in R_t) $,
-where $R_t$ are the terminal regions and $c_t$ the corresponding means.
-
-\lz
-
-This special additive structure can be exploited by boosting:  %Finished here
-
-\begin{align*}
-  \fm(\xb) &= \fmd(\xb) +  \betam \bmm(\xb) \\
-         &= \fmd(\xb) +  \betam \sum_{t=1}^{\Tm} \ctm \I(\xb \in \Rtm)
-\end{align*}
-
-Actually, we do not have to find $\ctm$ and $\betam$ in two separate steps
-(fitting against pseudo-residuals, then line search).
-Also note that the $\ctm$ will not really be loss-optimal as we used squared error loss
-to fit them against the pseudo residuals.
-
-\framebreak
-
-What we will do instead, is:
-
-$$ \fm(\xb) = \fmd(\xb) +  \sum_{j=1}^{\Tm} \ctmt \I(\xb \in \Rtm) $$
-
-We now induce the structure of the tree with respect to squared error loss,
-but then determine / change all $\ctmt$ individually and directly L-optimally:
-
-
-\vspace{-0.2cm}
-
-$$ \ctmt = \argmin_{c} \sum_{\xi \in \Rtm} L(\yi, \fmd(\xi) + c) $$
-
-\vspace{-0.5cm}
-
-\begin{center}
-
-\includegraphics[width=0.38\textwidth]{figure_man/gbm_leaf_adjustment.pdf}
-
-\end{center}
-
-\framebreak
-
-\input{algorithms/gradient_tree_boosting_algorithm.tex}
-
-\end{vbframe}
-
-\begin{vbframe}{Binary classification}
-
-
-For $\Yspace = \{0, 1\}$, we simply have to select an appropriate loss function, so let's
-use binomial loss as in logistic regression:
-
-$$ \Lxy = - y \fx + ln(1 + \exp(\fx))$$
-
-Then,
-
-\vspace{-0.5cm}
-
-\begin{align*}
-\tilde{r} &=-\fp{\Lxy}{\fx} \\
-&= y - \frac{\exp(\fx)}{1 + \exp(\fx)} \\
-&= y - \frac{1}{1 + \exp(-\fx)} = y - s(\fx).
-\end{align*}
-
-Here, $s(\fx)$ is the logistic sigmoid function, applied to a scoring model.
-So effectively the pseudo residuals are $y - \pix$.
-
-Through $\pix = s(\fx)$ we can also estimate posterior probabilities.
-
-\framebreak
-%
-% \lz
-%
-% As already mentioned, AdaBoost performs forward stagewise additive modelling
-% under exponential loss.
-%
-% \lz
-%
-% In principle we could also have used the exponential loss for classification with gradient boosting.
-% In practice there is no big difference, although binomial loss makes a bit more sense from a theoretical
-% (maximum likelihood) perspective.
-%
-% \lz
-%
-% \begin{table}
-% \centering
-% \begin{tabular}{lll}
-% &Binomial&Exponential\\
-% $y \in \{-1, 1\}$&$\ln(1+\exp(-2y\fx))$&$\exp(-y\fx)$\\
-% $y \in \{0, 1\}$&$-y\fx+\ln(1+\exp(\fx))$&$\exp(-(2y-1)\fx)$
-% \end{tabular}
-% \end{table}
-
-
-\end{vbframe}
 
 \begin{vbframe}{Multi-class problems}
 
@@ -165,7 +49,7 @@ of $L$. Optimizing this is more difficult, so we will skip the details and just 
 
 \lz
 
-The estimated class for $x$ is of course exactly the $k$ for which $\pikx$ is maximal.
+The estimated class for $\xb$ is of course exactly the $k$ for which $\pikx$ is maximal.
 
 \framebreak
 
@@ -266,7 +150,7 @@ models the $\alpha$-quantiles:
 
 \framebreak
 
-The AdaBoost fit has the structure of an additive model with \enquote{basis functions} $\bmm (x)$.
+The AdaBoost fit has the structure of an additive model with \enquote{basis functions} $\bmm (\xb)$.
 
 \lz
 
@@ -306,6 +190,8 @@ with minimizing over $\beta$ and $b$ and where $\fmdh$ is the boosting fit in it
 % Obvious idea: generalization on other loss functions, use of alternative basis methods.
 
 \end{vbframe}
+
+
 \begin{vbframe}{Take home message}
 Gradient boosting is a statistical reinterpretation of the older AdaBoost algorithm.
 
@@ -331,36 +217,5 @@ Methods to evaluate variable importance and to do variable selection exist.
 
 \end{vbframe}
 
-\begin{vbframe}{Gradient Boosting Playground}
-\begin{center}
-
-\includegraphics[width=0.7\textwidth]{figure_man/gbm_playground.png}
-
-\href{http://arogozhnikov.github.io/2016/07/05/gradient_boosting_playground.html}{\beamergotobutton{Open in browser.}}
-
-\end{center}
-\end{vbframe}
-
-\begin{vbframe}{mlrPlayground}
-\begin{center}
-
-\includegraphics[width=\linewidth]{figure_man/mlrplayground_welcome.png}
-
-\href{https://compstat-lmu.shinyapps.io/mlrPlayground/}{\beamergotobutton{Open in browser.}}
-
-\end{center}
-\end{vbframe}
-% \begin{vbframe}{RF vs AdaBoost vs GBM}
-
-% Recall the Spirals data from mlbench. We are using stumps again. Performance is measured with 3 times repeated 10CV.
-
-%<<fig.height=4, eval = FALSE, include = FALSE>>=
-% load("rsrc/comparing_methods.RData")
-
-%ggplot(data = ggd2[ggd2$learner %in% c("rf", "ada", "gbm", "rf.fulltree"), ],
-%  aes(x = iters, y = mmce, col = learner)) + geom_line()
-%@
-
-% \end{vbframe}
 
 \endlecture

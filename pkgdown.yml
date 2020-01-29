@@ -1,0 +1,14 @@
+pandoc: '2.2'
+pkgdown: 1.4.1
+pkgdown_sha: ~
+articles:
+  changelog: changelog.html
+  content: content.html
+  lmu_course: lmu_course.html
+  mlr_playground: other/mlr_playground.html
+  references: references.html
+  team: team.html
+urls:
+  reference: https://compstat-lmu.github.io/lecture_i2ml//reference
+  article: https://compstat-lmu.github.io/lecture_i2ml//articles
+

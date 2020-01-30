@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">Introduction to Machine Learning</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0</span>
       </span>
     </div>
 
@@ -41,14 +41,26 @@
 <li>
   <a href="articles/content.html">Content</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Courses
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="articles/lmu_course.html">LMU Munich 2020</a>
+    </li>
+    <li>
+      <a href="articles/ub_course.html">Uni Bielefeld 2020</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="articles/team.html">Team and License</a>
+</li>
 <li>
   <a href="articles/references.html">References</a>
-</li>
-<li>
-  <a href="articles/team.html">Team</a>
-</li>
-<li>
-  <a href="articles/lmu_course.html">LMU Course</a>
 </li>
 <li>
   <a href="articles/changelog.html">Changelog</a>
@@ -68,45 +80,42 @@
   <div class="contents col-md-9">
 
 
-<div id="this-is-the-development-branch" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#this-is-the-development-branch" class="anchor"></a>THIS IS THE DEVELOPMENT BRANCH!</h1></div>
-<ul>
-<li>All changes for the next iteration will be accumulated here.</li>
-<li>At the end of the iteration all changes will be merged to the master branch.</li>
-<li>Use the pull-request workflow to add changes to this branch.</li>
-</ul>
-</div>
-<div id="development-instructions" class="section level1">
-<h1 class="hasAnchor">
-<a href="#development-instructions" class="anchor"></a>Development instructions</h1>
-<p>Please see <a href="https://github.com/compstat-lmu/lecture_i2ml/blob/devel/README_intern.md">internal README</a> and the <a href="https://github.com/compstat-lmu/lecture_i2ml/blob/devel/attic/onboarding.md">documentation for new collaborators</a>.</p>
-</div>
 <div id="introduction-to-machine-learning-i2ml" class="section level1">
-<h1 class="hasAnchor">
-<a href="#introduction-to-machine-learning-i2ml" class="anchor"></a>Introduction to Machine Learning (I2ML)</h1>
-<p>Main course site: <a href="https://compstat-lmu.github.io/lecture_i2ml/" class="uri">https://compstat-lmu.github.io/lecture_i2ml/</a></p>
-<p>Devel repo on Github: <a href="https://github.com/compstat-lmu/lecture_i2ml/tree/devel" class="uri">https://github.com/compstat-lmu/lecture_i2ml/tree/devel</a></p>
+<div class="page-header"><h1 class="hasAnchor">
+<a href="#introduction-to-machine-learning-i2ml" class="anchor"></a>Introduction to Machine Learning (I2ML)</h1></div>
+<p>Main course site: <a href="https://compstat-lmu.github.io/lecture_i2ml" class="uri">https://compstat-lmu.github.io/lecture_i2ml</a></p>
+<p>Repository on Github: <a href="https://github.com/compstat-lmu/lecture_i2ml" class="uri">https://github.com/compstat-lmu/lecture_i2ml</a></p>
 <div id="content" class="section level2">
 <h2 class="hasAnchor">
 <a href="#content" class="anchor"></a>Content</h2>
-<p>The module offers an introductory and applied overview of “supervised” Machine Learning, i.e., regression and classification. This includes models such as linear regression, discriminant analysis, naive Bayes, decision trees and random forests, and their evaluation, with cross-validation and ROC analysis. More advanced techniques like hyperparameter optimization, model selection, nested resampling are summarized as well, accompanied by some advice regarding practical work.<br>
-The course is of an introductory nature and geared towards Bachelor’s students. It’s aimed at a practical and operational understanding of the covered algorithms and models, with less emphasis on theory and formalism. The accompanying exercises, demos and tutorials are a mix of theoretical and practical assignments, the latter in <strong><code>R</code></strong>, for which we will often use the <a href="https://github.com/mlr-org/mlr"><code>mlr</code></a> R package.</p>
+<p>This course offers an introductory and applied overview of “supervised” Machine Learning. This includes:</p>
+<ul>
+<li>ML Basics</li>
+<li>Supervised Regression</li>
+<li>Supervised Classification</li>
+<li>Performance Evaluation</li>
+<li>Classification and Regression Trees</li>
+<li>Random Forests</li>
+<li>Parameter Tuning</li>
+<li>Practical Advice</li>
+</ul>
+<p>The course is of an introductory nature and geared towards students with some statistics background. It is aimed at a practical and operational understanding of the covered algorithms and models, with less emphasis on theory and formalism. The accompanying exercises, demos and tutorials are a mix of theoretical and p ractical assignments, the latter in <strong><code>R</code></strong> (mostly with <a href="https://mlr3.mlr-org.com/"><code>mlr3</code></a>).</p>
 </div>
 <div id="concept" class="section level2">
 <h2 class="hasAnchor">
 <a href="#concept" class="anchor"></a>Concept</h2>
-<p>The course is organized as a digital lecture, which should be as self-contained and enable self-study as much as possible. The major part of the material is provided as slide sets with lecture videos. We have also prepared interactive tutorials where you can answer multiple choice questions, and learn how to apply the covered methods in <code>R</code> on some very short coding exercises. Our plan is to extend this practical self-study material over the next months and years.</p>
+<p>The course is organized as a digital lecture, which should be as self-contained and enable self-study as much as possible. The major part of the material is provided as slide sets with lecture videos. We have also prepared interactive tutorials where you can answer multiple choice questions, and learn how to apply the covered methods in <code>R</code> on some short coding exercises. Our plan is to extend this self-study material over the next months and years.</p>
 </div>
 <div id="prerequisites" class="section level2">
 <h2 class="hasAnchor">
 <a href="#prerequisites" class="anchor"></a>Prerequisites</h2>
-<p>The course is targeted at <em>ML beginners</em> with a basic, university level, education in maths:</p>
+<p>The course is targeted at <em>ML beginners</em> with a basic, university level, education in maths and statistics:</p>
 <ul>
 <li>Basic linear algebra: vectors, matrices, determinants</li>
 <li>Simple calculus: derivatives, integrals, gradients</li>
 <li>Some probability theory: probability, random variables, distributions</li>
-<li>Basic statistics knowledge: descriptive statistics, estimators. (Linear) modelling from a statistics perspective can help, but is not required, we sometimes compare to that</li>
+<li>Basic statistics knowledge: descriptive statistics, estimators.<br>
+(Linear) modelling from a statistics perspective will help, but is not required.</li>
 <li>Working knowledge of <strong><code>R</code></strong>
 </li>
 </ul>
@@ -114,11 +123,16 @@ The course is of an introductory nature and geared towards Bachelor’s students
 <div id="help-is-appreciated-and-welcome" class="section level2">
 <h2 class="hasAnchor">
 <a href="#help-is-appreciated-and-welcome" class="anchor"></a>Help is appreciated and welcome!</h2>
-<p>We hope to continously improve and expand this course over the coming years. We strongly believe in open source and collaborative work. Please contact us if you think likewise and would like to contribute.</p>
+<p>We hope to continously improve and expand this course over the coming years. We strongly believe in open source and collaborative work. Please contact us if you think likewise and would like to contribute. See also our <a href="CONTRIBUTING.html">contributing guidelines</a></p>
 <ul>
-<li>Are you an ML expert and like the course, but have some feedback or consider extending it? Write an email to Bernd and Fabian (see <em>Team</em> page).</li>
-<li>Are you a student taking the lecture - either at the LMU or online - and you spotted a typo, think we should rephrase something be or even would like to provide a new quiz question or coding example? Please consider providing a pull request. To do so, please check out the <em>devel</em> branch of the repo and add your fixes there. Writing an e-mail with suggested improvements is obviously very welcome as well!</li>
+<li>Are you an ML expert and like the course, but have some feedback or consider extending it? Write an email to Bernd and Fabian (see <a href="vignettes/team.Rmd">Team page</a>) or Open an <a href="https://github.com/compstat-lmu/lecture_i2ml/issues">issue</a>.</li>
+<li>Are you a student taking the lecture - either at the LMU or online - and you spotted a typo, think we should rephrase something be or even would like to provide a new quiz question or coding example? Please consider providing a pull request. To do so, please check out the <em>devel</em> branch of the repo and add your fixes there. Writing an e-mail or opening an <a href="https://github.com/compstat-lmu/lecture_i2ml/issues">issue</a> with suggested improvements is obviously very welcome as well!</li>
+<li>You are none of the above but would like to contribute, get in touch / open <a href="https://github.com/compstat-lmu/lecture_i2ml/issues">issues</a> / create pull requests! We are happy about any help.</li>
 </ul>
+</div>
+<div id="license" class="section level2">
+<h2 class="hasAnchor">
+<a href="#license" class="anchor"></a>License</h2>
 <p><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png"></a><br>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.</p>
 </div>
 <div id="similar-projects" class="section level2">
@@ -138,11 +152,18 @@ The course is of an introductory nature and geared towards Bachelor’s students
 </li>
 </ul>
 </div>
+<div class="community">
+<h2>Community</h2>
+<ul class="list-unstyled">
+<li><a href="CONTRIBUTING.html">Contributing guide</a></li>
+</ul>
+</div>
 <div class="developers">
 <h2>Developers</h2>
 <ul class="list-unstyled">
 <li>Bernd Bischl <br><small class="roles"> Author </small>  </li>
 <li>Fabian Scheipl <br><small class="roles"> Author </small>  </li>
+<li>Heidi Seibold <br><small class="roles"> Author </small>  </li>
 <li>Christoph Molnar <br><small class="roles"> Author </small>  </li>
 <li>Daniel Schalk <br><small class="roles"> Author, maintainer </small>  </li>
 </ul>
@@ -159,11 +180,11 @@ The course is of an introductory nature and geared towards Bachelor’s students
 
 
       <footer><div class="copyright">
-  <p>Developed by Bernd Bischl, Fabian Scheipl, Christoph Molnar, Daniel Schalk.</p>
+  <p>Developed by Bernd Bischl, Fabian Scheipl, Heidi Seibold, Christoph Molnar, Daniel Schalk.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.9000.</p>
 </div>
 
       </footer>

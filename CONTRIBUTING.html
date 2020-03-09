@@ -148,14 +148,15 @@
 <li>If you have to introduce new notation/symbols you should add it to <code>latex-math</code>, after doublechecking that
 <ul>
 <li>it is consistent with what we already have</li>
-<li>you do not use symbols we have already defined differently</li>
+<li>you do not overwrite symbols we have already defined differently</li>
 </ul>
 </li>
 <li>We write slides for beginners: keep it simple, keep it short</li>
-<li>Never put code on the slides, we want them to be orthogonal to issues of implementation. These are for the exercises/ practice sessions.</li>
-<li>We recommend usage of tinytex (install via <code><a href="https://rdrr.io/pkg/tinytex/man/install_tinytex.html">tinytex::install_tinytex()</a></code>)</li>
-<li>Compiling the slides is easiest by using the Makefile: just type <code>make</code> in the specific folder and it will render all slidesets in the folder, or <code>make &lt;SLIDES&gt;.pdf</code> to render <code>&lt;SLIDES&gt;.Rnw</code>
-</li>
+<li>We try to keep slides modular: slidesets should represent about 15-20 minutes of material and be moderately self-contained.</li>
+<li>Don’t put code on the slides, the theory is orthogonal to issues of implementation (… in theory..). Code is strictly for exercises/ practice sessions.</li>
+<li>Compiling the slides should be done via the Makefile: just type <code>make</code> in the specific folder and it will render all slidesets in the folder, or <code>make &lt;SLIDES&gt;.pdf</code> to render a specific file <code>&lt;SLIDES&gt;.Rnw</code>.</li>
+<li>We try to keep a “dependency graph” between slide sets up to date so that it’s easier to keep track of what material needs to be understood before what else. Please do add appropriate <code>%! includes:</code>-comments in your slides to keep this up-to-date, see also <code>attic/slide-dependencies.R</code> and <code>slides/slide-dependencies.pdf</code>.</li>
+<li>We recommend usage of <code>{tinytex}</code> (install via <code><a href="https://rdrr.io/pkg/tinytex/man/install_tinytex.html">tinytex::install_tinytex()</a></code>)</li>
 </ul>
 </div>
 <div id="code-snippets" class="section level3">

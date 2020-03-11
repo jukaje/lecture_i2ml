@@ -157,6 +157,8 @@
 <li>Compiling the slides should be done via the Makefile: just type <code>make</code> in the specific folder and it will render all slidesets in the folder, or <code>make &lt;SLIDES&gt;.pdf</code> to render a specific file <code>&lt;SLIDES&gt;.Rnw</code>.</li>
 <li>We try to keep a “dependency graph” between slide sets up to date so that it’s easier to keep track of what material needs to be understood before what else. Please do add appropriate <code>%! includes:</code>-comments in your slides to keep this up-to-date, see also <code>attic/slide-dependencies.R</code> and <code>slides/slide-dependencies.pdf</code>.</li>
 <li>We recommend usage of <code>{tinytex}</code> (install via <code><a href="https://rdrr.io/pkg/tinytex/man/install_tinytex.html">tinytex::install_tinytex()</a></code>)</li>
+<li>Use <code>make install</code> in the slides folder to automagically install <strong>all</strong> the <code>R</code> packages you’ll need for the slides, demos and exercises. See also <code>attic/install.R</code>
+</li>
 </ul>
 </div>
 <div id="code-snippets" class="section level3">

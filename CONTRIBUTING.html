@@ -138,8 +138,11 @@
 <h3 class="hasAnchor">
 <a href="#git-workflow" class="anchor"></a>Git-Workflow</h3>
 <ul>
-<li>Access to the <code>master</code> branch is protected, please make your own, issue-/task-specific branch <strong>off the <code>devel</code> branch</strong> to work in and do a pull request once you’re done.</li>
+<li>Access to the <code>master</code> branch is protected, please make your own, issue-/task-specific branch <strong>off the <code>master</code> branch</strong> to work in and do a pull request once you’re done.</li>
 <li>Do many <strong>small, focused, single-issue commits</strong> with <strong>descriptive commit messages</strong>: each commit message should refer the issue it adresses or fixes, i.e. include something like <code>adresses #&lt;issuenumber&gt;</code>, <code>closes #&lt;issuenumber&gt;</code> or similar, where applicable.</li>
+<li>We generally work based on the <a href="https://www.atlassian.com/git/tutorials/comparing-workflows/feature-branch-workflow">feature branch workflow</a>
+</li>
+<li>The person who merges the pull requests adds a note to the <a href="CHANGELOG.html">changelog</a> if the changes are substantial</li>
 </ul>
 </div>
 <div id="slides" class="section level3">
@@ -157,10 +160,25 @@
 <li>We write slides for beginners: keep it simple, keep it short</li>
 <li>We try to keep slides modular: slidesets should represent about 15-20 minutes of material and be moderately self-contained.</li>
 <li>Don’t put code on the slides, the theory is orthogonal to issues of implementation (… in theory..). Code is strictly for exercises/ practice sessions.</li>
-<li>Compiling the slides should be done via the Makefile: just type <code>make</code> in the specific folder and it will render all slidesets in the folder, or <code>make &lt;SLIDES&gt;.pdf</code> to render a specific file <code>&lt;SLIDES&gt;.Rnw</code>.</li>
+<li>Compiling the slides should be done via the Makefile: just type <code>make</code> in the specific folder and it will render all slidesets in the folder, or <code>make &lt;SLIDES&gt;.pdf</code> to render a specific file <code>&lt;SLIDES&gt;.tex</code>.</li>
 <li>We try to keep a “dependency graph” between slide sets up to date so that it’s easier to keep track of what material needs to be understood before what else. Please do add appropriate <code>%! includes:</code>-comments in your slides to keep this up-to-date, see also <code>attic/slide-dependencies.R</code> and <code>slides/slide-dependencies.pdf</code>.</li>
 <li>We recommend usage of <code>{tinytex}</code> (install via <code><a href="https://rdrr.io/pkg/tinytex/man/install_tinytex.html">tinytex::install_tinytex()</a></code>)</li>
 <li>Use <code>make install</code> in the slides folder to automagically install <strong>all</strong> the <code>R</code> packages you’ll need for the slides, demos and exercises. See also <code>attic/install.R</code>
+</li>
+</ul>
+</div>
+<div id="figures-used-in-the-slides" class="section level3">
+<h3 class="hasAnchor">
+<a href="#figures-used-in-the-slides" class="anchor"></a>Figures Used in the Slides</h3>
+<ul>
+<li>Figures not produced by us are added to figure-man folder of the respective chapter</li>
+<li>R-files which produce figures should be named "fig-*.R"
+<ul>
+<li>The basic assumption is that you execute the R-files from the rsrc folder</li>
+<li>These figure producing R-files should save their respective figures to “../figure/”. From the name of the figure it should be clear which R-file produced it.</li>
+<li>Utility functions used by more than one R-file should be exported to a separate R-file (also located in the respective rsrc folder)</li>
+<li>Heavy simulations should not be done in the figures producing R-files. Instead, we only load Rdata files which were produced by separate R-files (also located in the rsrc folder)</li>
+</ul>
 </li>
 </ul>
 </div>
